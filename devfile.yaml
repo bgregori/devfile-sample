@@ -1,0 +1,8 @@
+schemaVersion: 2.2.2
+metadata:
+  name: openshift-admin
+components:
+  - name: tools
+    container:
+      image: bgregorius/devspaces-openshift-admin:1.0
+      memoryLimit: 3Gi
