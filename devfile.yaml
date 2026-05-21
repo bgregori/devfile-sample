@@ -8,4 +8,4 @@ components:
       memoryLimit: 8Gi
 attributes:
   che-editors.extensions: |
-    - id: saoudrizwan.claude-dev
+    - id: cline.cline
