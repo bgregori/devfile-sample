@@ -6,6 +6,3 @@ components:
     container:
       image: bgregorius/devspaces-openshift-admin:1.0
       memoryLimit: 8Gi
-attributes:
-  che-editors.extensions: 
-    - id: https://open-vsx.org/api/saoudrizwan/claude-dev/3.1.2/file/saoudrizwan.claude-dev-3.1.2.vsix
