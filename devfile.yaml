@@ -6,10 +6,5 @@ components:
     container:
       image: bgregorius/devspaces-openshift-admin:1.0
       memoryLimit: 8Gi
-attributes:
-  .vscode/extensions.json: |
-    {
-      "recommendations": [
-        "saoudrizwan.claude-dev"
-      ]
-    }
+    plugin:
+      id: saoudrizwan.claude-dev
