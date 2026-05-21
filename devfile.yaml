@@ -6,6 +6,10 @@ components:
     container:
       image: bgregorius/devspaces-openshift-admin:1.0
       memoryLimit: 8Gi
-  - name: cline-extension
-    plugin:
-      id: saoudrizwan.claude-dev
+attributes:
+  .vscode/extensions.json: |
+    {
+      "recommendations": [
+        "saoudrizwan.claude-dev"
+      ]
+    }
