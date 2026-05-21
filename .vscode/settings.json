@@ -1,0 +1,6 @@
+{
+    "cline.apiProvider": "openai",
+    "cline.openai.baseURL": "${env:MY_CUSTOM_LLM_BASE_URL}",
+    "cline.openai.apiKey": "${env:MY_CUSTOM_LLM_API_KEY}",
+    "cline.defaultModel": "${env:MY_CUSTOM_LLM_MODEL}"
+}
