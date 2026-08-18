@@ -45,7 +45,7 @@ audit_namespace() {
     quota_count=$(oc get resourcequota -n "$ns" --no-headers 2>/dev/null | wc -l | tr -d ' ')
     if [[ "$quota_count" -eq 0 ]]; then
         echo -e "  ${YELLOW}⚠ No ResourceQuota defined${NC}"
-        ((findings++))
+        findings=$((findings + 1))
     else
         echo -e "  ${GREEN}✓${NC} $quota_count ResourceQuota(s) in place"
     fi
@@ -53,7 +53,7 @@ audit_namespace() {
     lr_count=$(oc get limitrange -n "$ns" --no-headers 2>/dev/null | wc -l | tr -d ' ')
     if [[ "$lr_count" -eq 0 ]]; then
         echo -e "  ${YELLOW}⚠ No LimitRange defined${NC}"
-        ((findings++))
+        findings=$((findings + 1))
     else
         echo -e "  ${GREEN}✓${NC} $lr_count LimitRange(s) in place"
     fi
@@ -61,7 +61,7 @@ audit_namespace() {
     netpol_count=$(oc get networkpolicy -n "$ns" --no-headers 2>/dev/null | wc -l | tr -d ' ')
     if [[ "$netpol_count" -eq 0 ]]; then
         echo -e "  ${YELLOW}⚠ No NetworkPolicies — namespace traffic is unrestricted${NC}"
-        ((findings++))
+        findings=$((findings + 1))
     else
         echo -e "  ${GREEN}✓${NC} $netpol_count NetworkPolicy(ies)"
     fi
@@ -81,7 +81,7 @@ audit_namespace() {
     else
         while IFS= read -r pod; do
             echo -e "  ${RED}✗ Privileged/root container: $pod${NC}"
-            ((findings++))
+            findings=$((findings + 1))
         done <<<"$privileged_pods"
     fi
 
@@ -102,8 +102,8 @@ audit_namespace() {
         count=0
         while IFS= read -r entry; do
             echo -e "  ${YELLOW}⚠ Missing requests/limits: $entry${NC}"
-            ((count++))
-            ((findings++))
+            count=$((count + 1))
+            findings=$((findings + 1))
         done <<<"$no_resources"
     fi
 
@@ -121,10 +121,10 @@ audit_namespace() {
         count=0
         while IFS= read -r job; do
             echo -e "  ${YELLOW}⚠ Stale job: $job${NC}"
-            ((count++))
+            count=$((count + 1))
         done <<<"$stale_jobs"
         echo "    Run: oc delete jobs -n $ns --field-selector status.successful=1"
-        ((findings += count))
+        findings=$((findings + count))
     fi
 
     echo ""
@@ -140,7 +140,7 @@ audit_namespace() {
     else
         while IFS= read -r svc; do
             echo -e "  ${YELLOW}⚠ Service with no endpoints: $svc${NC}"
-            ((findings++))
+            findings=$((findings + 1))
         done <<<"$services_no_ep"
     fi
 

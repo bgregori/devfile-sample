@@ -66,17 +66,17 @@ while IFS= read -r line; do
 
     expiry_epoch=$(date -d "$expiry_date" +%s 2>/dev/null || date -j -f "%b %d %H:%M:%S %Y %Z" "$expiry_date" +%s 2>/dev/null || continue)
     days_left=$(( (expiry_epoch - now) / 86400 ))
-    ((total++))
+    total=$((total + 1))
 
     if [[ $expiry_epoch -lt $now ]]; then
         echo -e "  ${RED}EXPIRED${NC}  route/$route_ns/$route_name (expired $((-days_left)) days ago)"
-        ((expired++))
+        expired=$((expired + 1))
     elif [[ $expiry_epoch -lt $crit_threshold ]]; then
         echo -e "  ${RED}CRITICAL${NC} route/$route_ns/$route_name (${days_left} days remaining)"
-        ((criticals++))
+        criticals=$((criticals + 1))
     elif [[ $expiry_epoch -lt $warn_threshold ]]; then
         echo -e "  ${YELLOW}WARNING${NC}  route/$route_ns/$route_name (${days_left} days remaining)"
-        ((warnings++))
+        warnings=$((warnings + 1))
     fi
 # shellcheck disable=SC2086
 done < <(oc get routes $NS_FLAG --no-headers 2>/dev/null | awk '{print $1, $2}')
@@ -97,17 +97,17 @@ while IFS= read -r line; do
 
     expiry_epoch=$(date -d "$expiry_date" +%s 2>/dev/null || date -j -f "%b %d %H:%M:%S %Y %Z" "$expiry_date" +%s 2>/dev/null || continue)
     days_left=$(( (expiry_epoch - now) / 86400 ))
-    ((total++))
+    total=$((total + 1))
 
     if [[ $expiry_epoch -lt $now ]]; then
         echo -e "  ${RED}EXPIRED${NC}  secret/$sec_ns/$sec_name (expired $((-days_left)) days ago)"
-        ((expired++))
+        expired=$((expired + 1))
     elif [[ $expiry_epoch -lt $crit_threshold ]]; then
         echo -e "  ${RED}CRITICAL${NC} secret/$sec_ns/$sec_name (${days_left} days remaining)"
-        ((criticals++))
+        criticals=$((criticals + 1))
     elif [[ $expiry_epoch -lt $warn_threshold ]]; then
         echo -e "  ${YELLOW}WARNING${NC}  secret/$sec_ns/$sec_name (${days_left} days remaining)"
-        ((warnings++))
+        warnings=$((warnings + 1))
     fi
 done < <(oc get secrets $NS_FLAG --field-selector type=kubernetes.io/tls --no-headers 2>/dev/null | awk '{print $1, $2}')
 

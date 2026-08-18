@@ -89,11 +89,11 @@ for resource in "${RESOURCE_TYPES[@]}"; do
         oc get "$item" -n "$NAMESPACE" -o yaml | \
             sed '/^\s*resourceVersion:/d; /^\s*uid:/d; /^\s*creationTimestamp:/d; /^\s*generation:/d; /^\s*selfLink:/d' \
             > "${resource_dir}/${name}.yaml"
-        ((count++))
+        count=$((count + 1))
     done <<<"$items"
 
     printf "  %-25s %d item(s)\n" "$resource" "$count"
-    ((total += count))
+    total=$((total + count))
 done
 
 echo ""

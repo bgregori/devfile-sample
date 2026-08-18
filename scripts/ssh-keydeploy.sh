@@ -77,7 +77,7 @@ for host in "${HOSTS[@]}"; do
 
     if ! ssh -i "$SSH_KEY" -o ConnectTimeout=10 -o BatchMode=yes "${SSH_USER}@${host}" true 2>/dev/null; then
         echo "  FAILED: Cannot connect to ${SSH_USER}@${host}" >&2
-        ((failed++))
+        failed=$((failed + 1))
         continue
     fi
 
@@ -100,7 +100,7 @@ mv ~/.ssh/authorized_keys.tmp ~/.ssh/authorized_keys
 REMOTE
 
     echo "  OK: $key_count key(s) deployed"
-    ((deployed++))
+    deployed=$((deployed + 1))
 done
 
 echo ""

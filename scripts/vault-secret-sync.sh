@@ -64,7 +64,7 @@ while IFS= read -r line; do
 
     secret_json=$(vault kv get -format=json "$vault_path" 2>&1) || {
         echo "  FAILED: Could not read $vault_path from Vault" >&2
-        ((failed++))
+        failed=$((failed + 1))
         continue
     }
 
@@ -77,7 +77,7 @@ while IFS= read -r line; do
 
     if [[ "$DRY_RUN" == "true" ]]; then
         echo "  DRY RUN: would create/update secret '$secret_name' in '$namespace' with keys: $keys"
-        ((synced++))
+        synced=$((synced + 1))
         continue
     fi
 
@@ -92,7 +92,7 @@ while IFS= read -r line; do
         --overwrite >/dev/null
 
     echo "  OK: synced ${#literal_args[@]} key(s)"
-    ((synced++))
+    synced=$((synced + 1))
 
 done <"$MAPPING_FILE"
 

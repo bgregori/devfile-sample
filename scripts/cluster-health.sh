@@ -56,7 +56,7 @@ if [[ -z "$not_ready" ]]; then
 else
     while IFS= read -r node; do
         fail "Node not ready: $node"
-        ((issues++))
+        issues=$((issues + 1))
     done <<<"$not_ready"
 fi
 
@@ -72,7 +72,7 @@ if [[ -z "$pressure_nodes" ]]; then
 else
     while IFS= read -r entry; do
         warn "$entry"
-        ((issues++))
+        issues=$((issues + 1))
     done <<<"$pressure_nodes"
 fi
 
@@ -100,8 +100,8 @@ else
     count=0
     while IFS= read -r pod; do
         fail "$pod"
-        ((count++))
-        ((issues++))
+        count=$((count + 1))
+        issues=$((issues + 1))
     done <<<"$problem_pods"
     echo "  ($count problem pod(s) total)"
 fi
@@ -123,7 +123,7 @@ if [[ -z "$degraded" ]]; then
 else
     while IFS= read -r op; do
         fail "$op"
-        ((issues++))
+        issues=$((issues + 1))
     done <<<"$degraded"
 fi
 
@@ -158,7 +158,7 @@ if [[ -z "$pv_issues" ]]; then
 else
     while IFS= read -r pv; do
         warn "PV $pv"
-        ((issues++))
+        issues=$((issues + 1))
     done <<<"$pv_issues"
 fi
 
